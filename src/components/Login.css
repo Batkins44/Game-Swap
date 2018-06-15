@@ -1,0 +1,21 @@
+Button{
+    float:right;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+#login{
+    float:right;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+h6:hover {
+    cursor:pointer;
+}
+
+#login img{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+}

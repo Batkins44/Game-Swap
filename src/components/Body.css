@@ -1,0 +1,30 @@
+#body-container{
+    height:100%;
+    width:100%;
+    display:grid;
+    grid-template-rows:25% 25% 25% 25%;
+    grid-template-columns:1.5fr 3fr 1.5fr;
+    column-gap:10%;
+    margin-top:40px;
+}
+
+#body-container h1{
+    font-size:100px;
+}
+
+#left-grid-header{
+    grid-column:1;
+    grid-row:1;
+}
+
+#center-grid{
+
+    grid-column:2;
+    grid-row:1;
+}
+
+#right-grid{
+
+    grid-column:3;
+    grid-row:1;
+}
