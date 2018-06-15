@@ -8,7 +8,7 @@
 
 }
 
-#have-want-buttons{
+.have-want-buttons{
     display:flex;
     justify-content:center;
     padding-bottom:500px;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 import App from '../App';
-import './Login.css';
+import './SearchResults.css';
 
 
 
@@ -23,10 +23,26 @@ export default class SearchResults extends React.Component {
   render() {
     console.log('gimmealltheprops',this.props);
     if(this.props.searchResults){
+      const searchResults = this.props.searchResults.map((item,index) => {
+        if (item.platforms){
+        let platformArray = [];
+        console.log(item.platforms,"thisthelength")
+        for(let i=0;i<item.platforms.length;i++){
+          let currentSearch = item.platforms[i].name;
+          platformArray.push(currentSearch);
+        }if(platformArray.includes("Nintendo Switch") || platformArray.includes("Xbox 360") || platformArray.includes("Xbox One") || platformArray.includes("Nintendo Switch") || platformArray.includes("PlayStation 3") || platformArray.includes("PlayStation 4")){
+        return(
+        <div>
+        <img src={item.image.thumb_url} />
+        {item.name}
+        </div>
+        )}}
+      })
 
 return (
-  <div>
-Search
+  <div id="search-results">
+  <hr />
+{searchResults}
 </div>
 )
 
