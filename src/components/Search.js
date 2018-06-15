@@ -2,14 +2,8 @@ import React from 'react';
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupButtonDropdown,
-  InputGroupDropdown,
   Input,
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  Button
  } from 'reactstrap';
 
  import { rebase } from './Base.js';
@@ -55,11 +49,13 @@ export default class Search extends React.Component {
       .then(function(data){
         console.log("search results", data);
         console.log("data:",data);
+        console.log("compprops",component.props);
         component.setState({
           searchLoaded:true,
           data:data.results
           
-        });
+        })
+        component.props.search(data.results)
       }
     )
 
@@ -77,7 +73,6 @@ export default class Search extends React.Component {
 
   render() {
     console.log("MY STATE BABY",this.state);
-    if(this.state.searchLoaded === false){
     return (
       <div id='search'>
         <InputGroup>
@@ -87,28 +82,6 @@ export default class Search extends React.Component {
       </div>
     );
 
-  }else{
-    const searchResults = this.state.data.map((item,index) => {
-      return(
-        <li key={index}>
-        {item.name} {item.original_release_date}
-        <br />
-        <a onClick={() => { this.addGames(item) }} color="primary">Add</a>
-        </li>
-      )
-  })
-  return(
-    <div id='search'>
-    <InputGroup>
-      <Input id='search-entry' placeholder="Search Games" />
-      <InputGroupAddon addonType="append"><Button onClick={() => { this.searchGames(document.getElementById('search-entry').value) }} color="primary">Search</Button></InputGroupAddon>
-    </InputGroup>
-  
-    <ul>
-    {searchResults}
-    </ul>
-    </div>
-  )
-  }
+
   }
 }

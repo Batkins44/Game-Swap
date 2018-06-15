@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import './Body.css';
 
 import { API_KEY,proxyUrl } from './Api.js';
+import SearchResults from './SearchResults';
 
 import Bodygames from './Bodygames';
 
@@ -10,6 +11,7 @@ export default class Body extends React.Component {
 
 
   render() {
+    console.log("THISPROPS",this.props)
     return (
         <div id='body-container'>
             <div id='left-grid'>
@@ -26,10 +28,9 @@ export default class Body extends React.Component {
             <div>
             <h3>Trades up for grabs will be shown below</h3>            
             </div>
-            <div>
-            <p>To start, click the appropriate 'W' for Want List or 'H' for the Have List. Hint: If there is a 'View Profile' Button, it means that another user is trying to trade that game to someone.</p>
 
-            </div>
+              <SearchResults searchResults={this.props.searchResults} userObj={this.props.userObj} />
+
             <div>
             <h3>Most active members will be shown here</h3>
 
@@ -38,7 +39,7 @@ export default class Body extends React.Component {
             <h3>-----------------------------------------</h3>            
             </div>
             <div>
-            <Bodygames />
+            <Bodygames userObject={this.props.userObj} />
 
             </div>
             <div>

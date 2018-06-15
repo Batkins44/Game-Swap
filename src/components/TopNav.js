@@ -1,10 +1,5 @@
 import React from 'react';
-import CurrentTrades from './CurrentTrades';
-import Search from './Search';
-import Login from './Login';
 import './TopNav.css';
-import {loginWithGoogle,logout} from './Auth';
-import {user} from './Base';
 
 
 export default class TopNav extends React.Component {
@@ -32,13 +27,13 @@ render() {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <a className="nav-link" href="#">My Lists <span className="sr-only">(current)</span></a>
+              <a className="nav-link" >My Lists <span className="sr-only">(current)</span></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Current Requests</a>
+              <a className="nav-link" >Current Requests</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">See Matches</a>
+              <a className="nav-link" >See Matches</a>
             </li>
           </ul>
         </div>

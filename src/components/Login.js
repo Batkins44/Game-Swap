@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 import {loginWithGoogle,logout} from './Auth';
-import App from '../App';
 import './Login.css'
 
 export default class Login extends React.Component {
@@ -17,7 +16,7 @@ export default class Login extends React.Component {
 }   else{
     return (
         <div id='login'>
-        <img src={this.props.userObj.photo} />
+        <img alt='user-icon' src={this.props.userObj.photo} />
         <p>Welcome, {this.props.userObj.name}</p>
         <h6 onClick={() => { logout() }}>Logout</h6>
         </div>

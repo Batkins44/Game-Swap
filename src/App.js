@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Topnav from'./components/TopNav';
 import Billboard from './components/Billboard';
 import Login from './components/Login';
 import Body from './components/Body';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import firebase from 'firebase';
 import {rebase} from './components/Base';
-import { loginWithGoogle,logout } from './components/Auth';
 
 class App extends Component {
 
@@ -21,12 +17,26 @@ class App extends Component {
         email: null,
         uid: null,
         photo:null,
-        name:null
+        name:null,
+        resultsReceived:false,
+        searchData:null
       }
     }
+      this.appSearchResults = this.appSearchResults.bind(this);
+
+    
 
     // this.getUserData = this.getUserData.bind(this);    
        
+  }
+
+  appSearchResults(results){
+    let component = this;
+    component.setState({
+      resultsReceived:true,
+      searchData:results
+    })
+
   }
 
   // getUserData(user) {
@@ -62,10 +72,7 @@ class App extends Component {
                   name:user.displayName
                 }
                 
-              });
-          // this.syncing();   
-          // this is working but I can't get into the Weather component with the grabbed fb zipcode
-          // this.getUserData(this.state.userObj);     
+              });  
         } else{
             this.setState({
                 authed: false,
@@ -84,9 +91,9 @@ class App extends Component {
     return (
       <div className="App">
       <Login userObj = {this.state.userObj} />
-      <Billboard />
+      <Billboard search={this.appSearchResults} />
         <Topnav userObj={this.state.userObj} />
-        <Body />
+        <Body searchResults={this.state.searchData} userObj={this.state.userObj}/>
       </div>
     );
   }

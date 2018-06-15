@@ -5,4 +5,16 @@
     grid-template-columns:1fr 1fr 1fr 1fr;
     column-gap:10%;
     margin-top:10px;
+
+}
+
+#have-want-buttons{
+    display:flex;
+    justify-content:center;
+    padding-bottom:500px;
+    color:black;
+}
+
+#have-want-buttons Button{
+width:50%;
 }
