@@ -35,6 +35,7 @@ export default class Body extends React.Component {
             <h3>Most active members will be shown here</h3>
 
             </div>
+
             <div>
             <h3>-----------------------------------------</h3>            
             </div>

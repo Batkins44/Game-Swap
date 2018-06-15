@@ -1,20 +1,40 @@
 #body-grid{
-    height:100%;
     width:100%;
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
-    column-gap:10%;
-    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
 
 }
 
-#have-want-buttons{
+.body-game{
+    width:170px;
+    height:300px;
+    display:flex;
+    flex-wrap:wrap;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin:10px;
+    /* border-bottom:2px solid blue; */
+    padding-bottom: 10px;
+    align-self:center;
+}
+
+.body-game b{
+    align-self:center;
+}
+
+.have-want-buttons{
     display:flex;
     justify-content:center;
-    padding-bottom:500px;
     color:black;
+    align-self:center;
+
 }
 
-#have-want-buttons Button{
-width:50%;
+
+
+
+.body-img{
+    align-self:center;
 }

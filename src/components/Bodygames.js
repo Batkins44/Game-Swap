@@ -87,45 +87,47 @@ addWant(game){
     if(this.state.bodyimgloaded === false){
     return (
         <div id='body-games'>
+        <hr />
         Loading...
+        
         </div>
     );
   }else{
 
 return(
+<div>
+<h2>Popular Games</h2>
   <div id='body-grid'>
-  <div id='body-game-1'>
-  <img src={this.state.data[0].image.thumb_url} />
-  {this.state.data[0].name}
-  </div>
-  <div id='body-game-2'>
-  <img src={this.state.data[1].image.thumb_url} />
-  {this.state.data[1].name}
-  </div>
-  <div id='body-game-3'>
-  <img src={this.state.data[2].image.thumb_url} />
-  {this.state.data[2].name}
-  </div>
-  <div id='body-game-4'>
-  <img src={this.state.data[3].image.thumb_url} />
-  {this.state.data[3].name}
-  </div>
-  <div id='have-want-buttons'>
+  <div className='body-game'>
+  <img className='body-img' src={this.state.data[0].image.thumb_url} />
+  <b>{this.state.data[0].name}</b>
+  <div id='body-buttons-1' className='have-want-buttons'>
   <Button onClick={() => { this.addWant(this.state.data[0]) }} color="primary">Want</Button>
   <Button onClick={() => { this.addHave(this.state.data[0]) }} color="warning">Have</Button>
   </div>
-  <div id='have-want-buttons'>
+  </div>
+  <div className='body-game'>
+  <img className='body-img' src={this.state.data[1].image.thumb_url} />
+  <b>{this.state.data[1].name}</b>
+  <div id='body-buttons-2' className='have-want-buttons'>
   <Button onClick={() => { this.addWant(this.state.data[1]) }} color="primary">Want</Button>
   <Button onClick={() => { this.addHave(this.state.data[1]) }} color="warning">Have</Button>
   </div>
-  <div id='have-want-buttons'>
+  </div>
+  <div className='body-game'>
+  <img className='body-img' src={this.state.data[2].image.thumb_url} />
+  <b>{this.state.data[2].name}</b>
+  <div id='body-buttons-3' className='have-want-buttons'>
   <Button onClick={() => { this.addWant(this.state.data[2]) }} color="primary">Want</Button>
   <Button onClick={() => { this.addHave(this.state.data[2]) }} color="warning">Have</Button>
   </div>
-  <div id='have-want-buttons'>
-  <Button onClick={() => { this.addWant(this.state.data[3]) }} color="primary">Want</Button>
-  <Button onClick={() => { this.addHave(this.state.data[3]) }} color="warning">Have</Button>
   </div>
+  </div>
+
+
+
+
+
   </div>
 )}
   }
