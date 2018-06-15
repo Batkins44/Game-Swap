@@ -1,9 +1,80 @@
 #search-results{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+
+
+
+}
+
+@media screen and (max-width: 1350px) {
+    #search-results {
+        grid-template-columns:1fr 1fr 1fr;
+        margin-left:0;
+    }
+  }
+
+.search-grid-box{
+width:170px;
+height:300px;
+
+display:flex;
+flex-wrap:wrap;
+flex-direction:column;
+align-items:flex-end;
+justify-content:flex-end;
+margin:10px;
+border-bottom:2px solid blue;
+padding-bottom: 10px;
+
+
+    
+
+}
+
+.search-grid-pic{
+align-self:center;
+min-width:150px;
+
+}
+
+
+
+.search-grid-name{
+align-self:center;
+    
+}
+
+
+ #game-grid{
     height:100%;
     width:100%;
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
+    grid-template-columns:2fr 2fr;
     column-gap:10%;
-    margin-top:10px;
+    grid-template-rows:900px 25% 25% 25%;
+}
+
+.game-preview-img{
+text-align:center;
+height:auto;
+width:auto;
+grid-column:1
+}
+
+
+
+.game-preview-deck{
+    grid-column:2;
+    grid-row:1;
+
+}
+
+.search-have-want-buttons{
+    display:flex;
+    justify-content:center;
+    color:black;
+    align-self:center;
 
 }
