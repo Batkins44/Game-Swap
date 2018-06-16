@@ -107,7 +107,7 @@ return (
     }else{
 return(
 <div>
-<p>To start, click the appropriate 'W' for Want List or 'H' for the Have List. Hint: If there is a 'View Profile' Button, it means that another user is trying to trade that game to someone.</p>
+<p>To start, click the appropriate button to add games to your "Want" and "Have" List. Hint: If there is a 'View Profile' Button, it means that another user is trying to trade that game to someone.</p>
 
 </div>
 )}
