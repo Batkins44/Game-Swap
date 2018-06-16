@@ -1,0 +1,17 @@
+#wants-list{
+    display:flex;
+
+}
+
+#haves-list{
+    display:flex;
+}
+
+.list-games{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    margin:20px;
+}
+

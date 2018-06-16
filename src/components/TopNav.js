@@ -1,5 +1,7 @@
 import React from 'react';
 import './TopNav.css';
+import Matches from './Matches';
+import Lists from './Lists';
 
 
 export default class TopNav extends React.Component {
@@ -18,6 +20,7 @@ export default class TopNav extends React.Component {
 
 
 render() {
+  console.log("BADASS PROPS",this.props)
     return(
         <div id='top-nav'>
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -26,15 +29,11 @@ render() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
-            <li className="nav-item active">
-              <a className="nav-link" >My Lists <span className="sr-only">(current)</span></a>
-            </li>
+            <Lists userObj={this.props.userObj} />
             <li className="nav-item">
               <a className="nav-link" >Current Requests</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" >See Matches</a>
-            </li>
+            <Matches />
           </ul>
         </div>
       </nav>
