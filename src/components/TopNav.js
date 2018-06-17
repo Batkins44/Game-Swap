@@ -33,7 +33,7 @@ render() {
             <li className="nav-item">
               <a className="nav-link" >Current Requests</a>
             </li>
-            <Matches />
+            <Matches userObj={this.props.userObj} />
           </ul>
         </div>
       </nav>

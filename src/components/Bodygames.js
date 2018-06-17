@@ -30,7 +30,6 @@ export default class Bodygames extends React.Component {
       context: this,
       asArray: true,
       then(data){
-        console.log(data);
         for(let i=0;i<4;i++){
           let randNum = Math.floor(Math.random() * data.length);  
 
@@ -44,8 +43,6 @@ export default class Bodygames extends React.Component {
             }
           }
         }
-        console.log("bodygame array",bodyGameArray);
-        console.log("bodygame content",bodyGameContent);
         component.setState({
           bodyimgloaded:true,
           data:bodyGameContent
@@ -83,7 +80,6 @@ addWant(game){
 }
 
   render() {
-    console.log(this.state,"heres the state");
     if(this.state.bodyimgloaded === false){
     return (
         <div id='body-games'>

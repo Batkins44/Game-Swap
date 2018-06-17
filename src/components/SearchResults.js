@@ -23,7 +23,6 @@ export default class SearchResults extends React.Component {
   }
 
   toggleGame(game) {
-    console.log(game,'gimmethatgame');
     this.setState({
       modal: !this.state.modal,
       ModalGameName:game.name,
@@ -41,7 +40,6 @@ export default class SearchResults extends React.Component {
   }
 
   // addHave = (game) => {
-  //   console.log('addhaveprops',this.props);
   //   if(this.props.userObj.name){
   //       return rebase.initializedApp.database().ref().child(`haves/${this.props.userObj.uid}/${game.name}`)
   //         .update(game)
@@ -56,7 +54,6 @@ export default class SearchResults extends React.Component {
 
 
   render() {
-    console.log('gimmealltheprops',this.props,'gimmeallthestates',this.state);
     let game;
     if(this.props.searchResults){
       const searchResults = this.props.searchResults.map((item,index) => {
@@ -87,14 +84,16 @@ return (
 
 <div id='game-grid'>
 <div className='game-preview-img'>
-<img  src={this.state.ModalGameImg} />
+<img src={this.state.ModalGameImg} width='500px' />
 </div>
 <div className='game-preview-deck'>
 {this.state.ModalGameDeck}
+
 <div className='have-want-buttons'>
 <Button color="primary" onClick={() => { addWant(this.state.ModalGame,this.props.userObj) }}>Want</Button>{' '}
 <Button color="warning" onClick={() => { addHave(this.state.ModalGame,this.props.userObj) }}>Have</Button>{' '}
 </div>
+{/* Would love to put Metacritic score and avg price of game */}
 </div>
 </div>
 

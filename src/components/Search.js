@@ -30,6 +30,12 @@ export default class Search extends React.Component {
 
   }
 
+  _handleKeyPress = (e) => {
+    if (e.key === 'Enter'){
+      // this.searchGames(entry);
+    }
+  }
+
   toggleDropDown() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
@@ -47,9 +53,6 @@ export default class Search extends React.Component {
       fetch(proxyUrl + `http://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&query=${entry}&resources=game&limit=100`)
       .then((resp) => resp.json())
       .then(function(data){
-        console.log("search results", data);
-        console.log("data:",data);
-        console.log("compprops",component.props);
         component.setState({
           searchLoaded:true,
           data:data.results
@@ -62,7 +65,6 @@ export default class Search extends React.Component {
   }
 
   addGames(game){
-    console.log("addGame", game);
     return rebase.initializedApp.database().ref().child(`popular/${game.id}`)
       .update(game)
       .then(() => {
@@ -72,12 +74,11 @@ export default class Search extends React.Component {
 
 
   render() {
-    console.log("MY STATE BABY",this.state);
     return (
       <div id='search'>
         <InputGroup>
-          <Input id='search-entry' placeholder="Search Games" />
-          <InputGroupAddon addonType="append"><Button onClick={() => { this.searchGames(document.getElementById('search-entry').value) }} color="primary">Search</Button></InputGroupAddon>
+          <Input onKeyPress={() => { this._handleKeyPress(document.getElementById('search-entry').value) }} id='search-entry' placeholder="Search Games" />
+          <InputGroupAddon addonType="append"><Button  onClick={() => { this.searchGames(document.getElementById('search-entry').value) }} color="primary">Search</Button></InputGroupAddon>
         </InputGroup>
       </div>
     );
