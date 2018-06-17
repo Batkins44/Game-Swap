@@ -22,13 +22,11 @@ export default class Lists extends React.Component {
     let component = this
     let havesArray = [];
     let wantsArray = [];
-    console.log(component.props,"heyclickprops")
     if(component.props.userObj.name){
     rebase.fetch(`haves/${component.props.userObj.uid}`, {
         context: this,
         asArray: true,
         then(data){
-          console.log(data);
           component.setState({
             haves:data
             
@@ -39,7 +37,6 @@ export default class Lists extends React.Component {
             context: this,
             asArray: true,
             then(data){
-              console.log(data);
               component.setState({
                 modal: !this.state.modal,
                 wants:data,
@@ -103,8 +100,8 @@ if(this.state.listsLoaded){
           <ModalBody >
           <div className="container-fluid">
           <div className="row">
-            <div id='wants-list' className="col-md-6"><h1>Wants</h1><ul>{want}</ul></div>
-            <div id='haves-list' className="col-md-6"><h1>Haves</h1><ul>{have}</ul></div>
+            <div id='wants-list' className="col-md-6"><h1>Wants:</h1><ul>{want}</ul></div>
+            <div id='haves-list' className="col-md-6"><h1>Haves:</h1><ul>{have}</ul></div>
           </div>
           
         </div>

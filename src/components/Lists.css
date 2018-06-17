@@ -1,10 +1,13 @@
 #wants-list{
     display:flex;
+    border-right: 2px solid #207a9b;
+    border-top: 2px solid #207a9b;
 
 }
 
 #haves-list{
     display:flex;
+    border-top: 2px solid #207a9b;
 }
 
 .list-games{
@@ -13,5 +16,7 @@
     justify-content:center;
     flex-direction:column;
     margin:20px;
+    padding-right:10px;
+
 }
 

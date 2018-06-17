@@ -15,7 +15,6 @@ export default class TopNav extends React.Component {
 
     getSearchQuery(results){
         let component = this;
-        console.log("DEEEZRZZULTS",results);
         component.props.search(results)
     }
 

@@ -11,7 +11,6 @@ export default class Body extends React.Component {
 
 
   render() {
-    console.log("THISPROPS",this.props)
     return (
         <div id='body-container'>
             <div id='left-grid'>
