@@ -4,7 +4,10 @@ import Topnav from'./components/TopNav';
 import Billboard from './components/Billboard';
 import Login from './components/Login';
 import Body from './components/Body';
+import ProposalModal from './components/ProposalModal';
 import {rebase} from './components/Base';
+import { Button } from 'reactstrap';
+
 
 class App extends Component {
 
@@ -13,6 +16,11 @@ class App extends Component {
 
     this.state = {
       authed: false,
+      proposals:{
+        newProposals:false,
+        proposalsReceived:null,
+        proposalCount:null
+      },
       userObj: {
         email: null,
         uid: null,
@@ -22,6 +30,7 @@ class App extends Component {
         searchData:null
       }
     }
+      this.toggle = this.toggle.bind(this);
       this.appSearchResults = this.appSearchResults.bind(this);
 
     
@@ -39,9 +48,16 @@ class App extends Component {
 
   }
 
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
 
 
   componentDidMount() {
+    let component = this;
     this.authListener = rebase.initializedApp.auth().onAuthStateChanged((user) =>{
       // console.log("USER", user);
         if (user) {
@@ -54,7 +70,34 @@ class App extends Component {
                   name:user.displayName
                 }
                 
-              });  
+              })
+              rebase.fetch(`proposals/`, {
+                context: this,
+                then(data){
+
+                 let usersProposedTo = Object.keys(data);
+
+                  if(usersProposedTo.includes(this.state.userObj.uid)){
+                    console.log("Matched the fuck up");
+                    rebase.fetch(`proposals/${this.state.userObj.uid}`, {
+                      context: this,
+                      asArray:true,
+                      then(data){
+                        let proposalsReceived = Object.values(data);
+                        console.log("THEITEMS",proposalsReceived);
+                        component.setState({
+                          proposals: 
+                          {newProposals:true,
+                          proposalsReceived:proposalsReceived,
+                          proposalCount:proposalsReceived.length
+                          }
+                        })
+                        console.log("i dont get it",this.state);
+                      }
+                    })
+                  }
+                }
+              })
         } else{
             this.setState({
                 authed: false,
@@ -76,6 +119,7 @@ class App extends Component {
       <Billboard search={this.appSearchResults} />
         <Topnav userObj={this.state.userObj} />
         <Body searchResults={this.state.searchData} userObj={this.state.userObj}/>
+        <ProposalModal proposals={this.state.proposals}/>
       </div>
     );
   }

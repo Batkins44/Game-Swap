@@ -2,19 +2,39 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { rebase } from './Base.js';
+import './Matches.css'
 
 class Matches extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      partialMatch1:null,
+      partialMatch2:null,
+      fullMatches:null,
+      matchesLoaded:false
     };
 
     this.toggle = this.toggle.bind(this);
     this.toggleMatches = this.toggleMatches.bind(this);
+    this.proposeTrade = this.proposeTrade.bind(this);
   }
 
-  toggleMatches(){
+  proposeTrade = (trade) => {
+    let component = this;
+    return rebase.initializedApp.database().ref().child(`proposals/${trade.otherUser}`)
+    .push({
+
+        proposingName: component.props.userObj.name,
+        proposingUid: component.props.userObj.uid,
+        offeringGame:trade.userGives,
+        receivingUid:trade.otherUser,
+        inExchangeFor:trade.userGets
+
+    })
+  }
+
+  toggleMatches = () => {
     console.log('toggleMatches');
     let component = this
     let userWantsArray = [];
@@ -105,7 +125,9 @@ class Matches extends React.Component {
                           if(match1[q][0] == allHaves[z].key){
                             match3.push({ 
                               userGets:match1[q][1],
-                              userGives:allHaves[z][`${currentUserWant}`]});
+                              userGives:allHaves[z][`${currentUserWant}`],
+                              otherUser:allHaves[z].key}
+                              );
                             // match3.userGets = allHaves[z][`${currentUserWant}`]
                           }
                         }
@@ -117,13 +139,16 @@ class Matches extends React.Component {
                 console.log('match1',match1);
                 console.log('match2',match2);
                 console.log('match3',match3);
-                // component.setState({
-                //   modal: !this.state.modal,
-                //   wants:data,
-                //   listsLoaded:true
-  
+                component.setState({
+                  modal: !this.state.modal,
+                  partialMatch1:match1,
+                  partialMatch2:match2,
+                  fullMatches:match3,
+                  matchesLoaded:true
+      
                   
-                // });
+                })
+
               }
             })
         )
@@ -142,22 +167,82 @@ class Matches extends React.Component {
   }
 
   render() {
+    if(this.state.matchesLoaded === true && this.state.fullMatches.length > 0){
+
+      
+
+      const fullMatches = this.state.fullMatches.map((item,index) => {
+        return(
+            <div className='match-box'>
+            <h5>You Get:</h5>
+            <div className='user-gets'>
+            <h4>{item.userGets.name}</h4>
+            <img src={item.userGets.image.thumb_url} />
+            </div>
+            <h5>You Trade:</h5>
+            <div className='user-gives'>
+            <h4>{item.userGives.name}</h4>
+            <img src={item.userGives.image.thumb_url} />
+            </div>
+            <Button className='propose-btn' onClick={() => { this.proposeTrade(item) }} color="warning"><h5>Propose</h5><h5>Trade</h5></Button>
+            </div>
+
+    )}
+  
+  
+  
+  )
+      console.log("MYSTATE",this.state);
     return (
       <div>
         <Button color="primary" onClick={() => { this.toggleMatches() }}>See Matches</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal size='lg' isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
           <ModalBody>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          <div id='all-matches'>
+          <div id='full-match-box' className='match-box-full'>
+          <h2>Matches</h2>
+            {fullMatches}
+          </div>
+          {/*<div id='match-1-box' className='match-box-full'>
+          <h2>Partial Matches</h2>
+          </div>
+          <div id='match-2-box' className='match-box-full'>
+          <h2>Partial Matches</h2>
+    </div> */}
+          </div>
           </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
         </Modal>
       </div>
     );
-  }
+  }else if(this.state.matchesLoaded == true){
+    return(
+    <div>
+    <div>
+    <Button color="primary" onClick={() => { this.toggleMatches() }}>See Matches</Button>
+    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+      <ModalHeader toggle={this.toggle}>Matches</ModalHeader>
+      <ModalBody>
+      <h5>You Have No Matches</h5>
+      </ModalBody>
+    </Modal>
+  </div>
+    </div>
+  )}else{
+    return(
+      <div>
+      <div>
+      <Button color="primary" onClick={() => { this.toggleMatches() }}>See Matches</Button>
+      <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <ModalHeader toggle={this.toggle}>Matches</ModalHeader>
+        <ModalBody>
+        <h5>Loading</h5>
+        </ModalBody>
+      </Modal>
+    </div>
+      </div>
+    )
+  }}
 }
 
 export default Matches;

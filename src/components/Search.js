@@ -50,9 +50,10 @@ export default class Search extends React.Component {
 
     searchGames(entry){
       let component = this;
-      fetch(proxyUrl + `http://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&query=${entry}&resources=game&limit=100`)
+      fetch(proxyUrl + `http://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&query=${entry}&resources=game&limit=15`)
       .then((resp) => resp.json())
       .then(function(data){
+        console.log(data);
         component.setState({
           searchLoaded:true,
           data:data.results

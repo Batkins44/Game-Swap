@@ -113,7 +113,7 @@ if(this.state.listsLoaded){
      return (
         <div>
         <Button color="primary" onClick={this.toggleClick}>My Lists</Button>
-        <Modal size='lg' isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Lists</ModalHeader>
           <ModalBody>
             Loading...
