@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import './Bodygames.css';
 
 import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap';
+  CardTitle, CardSubtitle, Button, Modal, ModalHeader, ModalBody, ModalFooter,FormGroup, Label, Input } from 'reactstrap';
 
 import { API_KEY,proxyUrl } from './Api.js';
 
@@ -16,9 +16,19 @@ export default class Bodygames extends React.Component {
     super(props);
     this.state = {
         bodyimgloaded:false,
-        data:null
+        data:null,
+        modal: false,
+        clickedGame:null,
+        
     }
 
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   componentDidMount(){
@@ -54,10 +64,27 @@ export default class Bodygames extends React.Component {
 }
 
 addHave = (game) => {
+  let component = this
 if(this.props.userObject.name){
     return rebase.initializedApp.database().ref().child(`haves/${this.props.userObject.uid}/${game.name}`)
       .update(game)
       .then(() => {
+    const platformSelect = game.platforms.map((item,index) => {
+      return(
+        <FormGroup check>
+        <Label check>
+          <Input type="radio" value={item.name} />{' '}
+          {item.name}
+        </Label>
+      </FormGroup>
+
+
+  )})
+        component.setState({
+          modal: !this.state.modal,
+          platforms:platformSelect
+          
+        });
         return game;
       })
 }else{
@@ -89,6 +116,20 @@ addWant(game){
         </div>
     );
   }else{
+    console.log("THISMYSTATEBITTTCHH",this.state.clickedGame);
+//     if(this.state.clickedGame){
+//     const platformSelect = this.state.clickedGame.platforms.map((item,index) => {
+//       return(
+//         <FormGroup check>
+//         <Label check>
+//           <Input type="radio" value={item.name} />{' '}
+//           {item.name}
+//         </Label>
+//       </FormGroup>
+
+
+//   )})
+// }
 
 return(
 <div>
@@ -120,7 +161,22 @@ return(
   </div>
   </div>
 
-
+  <div>
+  <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+    <ModalHeader toggle={this.toggle}>Which Platform</ModalHeader>
+    <ModalBody>
+    Please Select the appropriate Platform
+    <br />
+    <FormGroup tag="fieldset">
+    <legend>Radio Buttons</legend>
+    {this.state.platforms}
+  </FormGroup>
+    </ModalBody>
+    <ModalFooter>
+      <Button color="primary" onClick={() => { this.toggle() }}>Choose</Button>{' '}
+    </ModalFooter>
+  </Modal>
+</div>
 
 
 
