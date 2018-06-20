@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { rebase } from './Base.js';
 import './Matches.css'
 
@@ -32,6 +32,7 @@ class Matches extends React.Component {
         inExchangeFor:trade.userGets
 
     })
+
   }
 
   toggleMatches = () => {
@@ -197,7 +198,7 @@ class Matches extends React.Component {
       <div>
         <Button color="primary" onClick={() => { this.toggleMatches() }}>See Matches</Button>
         <Modal size='lg' isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Potential Trades</ModalHeader>
           <ModalBody>
           <div id='all-matches'>
           <div id='full-match-box' className='match-box-full'>

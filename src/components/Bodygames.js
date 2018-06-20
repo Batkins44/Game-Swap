@@ -133,7 +133,7 @@ addWant(game){
 
 return(
 <div>
-<h2>Popular Games</h2>
+<h2 id='pop-games'>Popular Games</h2>
   <div id='body-grid'>
   <div className='body-game'>
   <img className='body-img' src={this.state.data[0].image.thumb_url} />

@@ -4,6 +4,7 @@ import Topnav from'./components/TopNav';
 import Billboard from './components/Billboard';
 import Login from './components/Login';
 import Body from './components/Body';
+import Footer from './components/Footer';
 import ProposalModal from './components/ProposalModal';
 import {rebase} from './components/Base';
 import { Button } from 'reactstrap';
@@ -32,6 +33,7 @@ class App extends Component {
     }
       this.toggle = this.toggle.bind(this);
       this.appSearchResults = this.appSearchResults.bind(this);
+      this.logoutState = this.logoutState.bind(this);
 
     
 
@@ -84,42 +86,82 @@ class App extends Component {
                       asArray:true,
                       then(data){
                         let proposalsReceived = Object.values(data);
-                        console.log("THEITEMS",proposalsReceived);
                         component.setState({
                           proposals: 
                           {newProposals:true,
                           proposalsReceived:proposalsReceived,
-                          proposalCount:proposalsReceived.length
+                          proposalCount:proposalsReceived.length,
+                          userSeenModal:true
                           }
                         })
-                        console.log("i dont get it",this.state);
+
                       }
                     })
+                  }else{
+                    component.setState({
+                      proposals: 
+                      {
+                        newProposals:false,
+                      proposalsReceived:null,
+                      proposalCount:null,
+                      userSeenModal:true
+                      }
+                    })
+
                   }
                 }
               })
         } else{
+          console.log(this.state,"before")
             this.setState({
                 authed: false,
                 userObj: {
                   email: null,
                   uid: null,
                   photo:null,
-                  name:null
+                  name:null,
+                  proposals: 
+                  {newProposals:false,
+                  proposalsReceived:null,
+                  proposalCount:null
+                  }
                 }
             })
+            console.log(this.state,"after")
         }
     })
   }
 
+  logoutState(){
+    this.setState({
+      authed: false,
+      userObj: {
+        email: null,
+        uid: null,
+        photo:null,
+        name:null,
+        proposals: 
+        {newProposals:false,
+        proposalsReceived:null,
+        proposalCount:null
+        }
+      }
+    }, function () {
+      console.log(this.state);
+  });
+    console.log("YESSIRRRR",this.state)
+
+}
+
   render() {
     return (
       <div className="App">
-      <Login userObj = {this.state.userObj} />
+      <Login userObj = {this.state.userObj} logoutState={this.logoutState} />
       <Billboard search={this.appSearchResults} />
-        <Topnav userObj={this.state.userObj} />
+        <Topnav userObj={this.state.userObj} proposals={this.state.proposals} />
         <Body searchResults={this.state.searchData} userObj={this.state.userObj}/>
-        <ProposalModal proposals={this.state.proposals}/>
+        <ProposalModal proposals={this.state.proposals} userObj={this.state.userObj}/>
+        <Footer />
       </div>
     );
   }
