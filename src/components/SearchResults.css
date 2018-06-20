@@ -3,7 +3,8 @@
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-padding-bottom:50px;
+padding-bottom:150px;
+margin-top:-75px;
 
 
 
@@ -17,8 +18,8 @@ padding-bottom:50px;
   }
 
 .search-grid-box{
-width:150px;
-height:300px;
+width:140px;
+height:330px;
 
 display:flex;
 flex-wrap:wrap;

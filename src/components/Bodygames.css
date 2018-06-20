@@ -3,11 +3,17 @@
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
+    padding-bottom:50px;
+
 
 }
 
+
+#pop-games{
+    margin-top:-50px;
+}
 .body-game{
-    width:150px;
+    width:140px;
     height:300px;
     display:flex;
     flex-wrap:wrap;
