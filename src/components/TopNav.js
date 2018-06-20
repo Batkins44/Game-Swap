@@ -106,6 +106,9 @@ acceptTrade(name,address,city,state,zip) {
   return rebase.initializedApp.database().ref().child(`acceptedTrades/`)
   .update({
 [tradeID]:{
+  proposeUid:component.state.clickedProposal.proposingUid,
+  otherUid:component.props.userObj.uid,
+  stage:1,
       [component.props.userObj.uid]: 
                   {
                     name:component.props.userObj.name,
@@ -121,7 +124,8 @@ acceptTrade(name,address,city,state,zip) {
                     },
                     sentGame:false,
                     receivedGame:false,
-                    message:`<h5>Awaiting address from ${component.state.clickedProposal.proposingName}.<h5>`
+                    sentAddress:true,
+                    message:`Awaiting address from ${component.state.clickedProposal.proposingName}.`
 
 
                   },
@@ -133,13 +137,13 @@ acceptTrade(name,address,city,state,zip) {
                   sentGame:false,
                   receivedGame:false,
                   sentAddress:false,
+                  message:`Trade for ${component.state.clickedProposal.inExchangeFor.name} been accepted. Please send Your address info by clicking here`,
                   addressInfo:{
                     name:null,
                     streetAddress:null,
-                    city:city,
-                    state:state,
-                    zip:zip,
-                    message:'Trade '
+                    city:null,
+                    state:null,
+                    zip:null,
                   }
       }
 

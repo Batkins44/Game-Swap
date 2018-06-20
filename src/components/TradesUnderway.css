@@ -1,0 +1,10 @@
+.message-box{
+    text-align:center;
+    border-bottom:2px solid #207a9b;
+    padding-bottom:50px;
+}
+
+.send-address{
+    display:block;
+    text-align:center;
+}
