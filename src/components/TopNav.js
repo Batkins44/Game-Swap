@@ -30,6 +30,8 @@ export default class TopNav extends React.Component {
 
       }
 
+
+
       toggle() {
         this.setState({
           modal: !this.state.modal
@@ -95,12 +97,78 @@ noProposals(){
   }
 }
 
+removeProposal(item){
+  let component = this;
+  let index = this.state.proposals.proposalsReceived.indexOf(this.state.clickedProposal);
+  let removeGame = this.state.clickedProposal.offeringGame.name;
+  console.log("INDEXOF",index);
+  let copyProposalsReceived = this.state.proposals.proposalsReceived;
+  let newProposalCount = this.state.proposals.proposalCount;
+  newProposalCount=newProposalCount-1;
+  let newNewProposals;
+  copyProposalsReceived.splice(index,1);
+  console.log("duplicates bitches",copyProposalsReceived);
+  for(let i=0;i<copyProposalsReceived.length;i++){
+    let currentProposal = this.state.proposals.proposalsReceived[i];
+    if(currentProposal.offeringGame.name == removeGame){
+      let otherIndex = copyProposalsReceived.indexOf(currentProposal)
+      copyProposalsReceived.splice(otherIndex,1);
+      newProposalCount = newProposalCount - 1;
+
+    }
+  }
+  if(newProposalCount>0){
+    newNewProposals = true;
+  }else{
+    newNewProposals = false;
+  }
+  
+  this.setState({
+    proposals:{
+      proposalCount:newProposalCount,
+      proposalsReceived:copyProposalsReceived,
+      newProposals:newNewProposals
+
+    }
+  })
+  //  rebase.remove(`proposals/${component.props.userObj.uid}/${component.state.clickedProposal.offeringGame.name}`);
+
+   return rebase.initializedApp.database().ref().child(`proposals/`)
+   .update({
+
+    [component.props.userObj.uid]: this.state.proposals.proposalsReceived
+    
+ 
+    } )
+
+}
+
 acceptTrade(name,address,city,state,zip) {
   console.log("thisstateclicked",this.state.clickedProposal);
   let component = this;
   let involvedUsers;
+
+
+
+ 
   console.log(name,address,city,state,zip)
   let tradeID = Math.floor(Math.random() * (99999 - 10000) ) + 100000
+
+  console.log("BIIIIIIITCH",component.props.userObj.uid,component.state.clickedProposal.offeringGame.name);
+
+console.log(component.props.userObj.uid,component.state.clickedProposal.inExchangeFor.name)
+  //  rebase.remove(`haves/${component.props.userObj.uid}/${component.state.clickedProposal.offeringGame.name}`);
+  //  rebase.remove(`wants/${component.props.userObj.uid}/${component.state.clickedProposal.inExchangeFor.name}`);
+  //  rebase.remove(`haves/${component.state.clickedProposal.proposingUid}/${component.state.clickedProposal.inExchangeFor.name}`);
+  //  rebase.remove(`wants/${component.state.clickedProposal.proposingUid}/${component.state.clickedProposal.offeringGame.name}`);
+this.toggleAll();
+console.log("beeeeeeetch",this.state.proposals.proposalsReceived);
+// this.removeProposal()
+// this.setState({
+//   proposals:{
+//     proposalsReceived
+//   }
+// })
   // involvedUsers = (this.state.clickedProposal.receivingUid) + "," + (this.state.clickedProposal.proposingUid);
 
   return rebase.initializedApp.database().ref().child(`acceptedTrades/`)
@@ -113,14 +181,12 @@ acceptTrade(name,address,city,state,zip) {
                   {
                     name:component.props.userObj.name,
                     uid:component.props.userObj.uid,
-                    trading:component.state.clickedProposal.inExchangeFor,
-                    receiving:component.state.clickedProposal.offeringGame,
+                    trading:component.state.clickedProposal.offeringGame,
+                    receiving:component.state.clickedProposal.inExchangeFor,
                     addressInfo:{
-                      name:name,
-                      streetAddress:address,
-                      city:city,
-                      state:state,
-                      zip:zip
+                      line1:name,
+                      line2:address,
+                      line3:city + "," + state + " " + zip
                     },
                     sentGame:false,
                     receivedGame:false,
@@ -132,12 +198,12 @@ acceptTrade(name,address,city,state,zip) {
       [component.state.clickedProposal.proposingUid]: {
                   name:component.state.clickedProposal.proposingName,
                   uid:component.state.clickedProposal.proposingUid,
-                  trading:component.state.clickedProposal.offeringGame,
-                  receiving:component.state.clickedProposal.inExchangeFor,
+                  trading:component.state.clickedProposal.inExchangeFor,
+                  receiving:component.state.clickedProposal.offeringGame,
                   sentGame:false,
                   receivedGame:false,
                   sentAddress:false,
-                  message:`Trade for ${component.state.clickedProposal.inExchangeFor.name} been accepted. Please send Your address info by clicking here`,
+                  message:`Trade for ${component.state.clickedProposal.offeringGame.name} been accepted. Please send Your address info by clicking here`,
                   addressInfo:{
                     name:null,
                     streetAddress:null,
@@ -153,19 +219,20 @@ acceptTrade(name,address,city,state,zip) {
 }
 
 render() {
+  console.log("ITSMYSTATEBIIITCH",this.state);
 if(this.state.proposals.proposalCount){
   const proposalMatches = this.state.proposals.proposalsReceived.map((item,index) => {
     return(
       <div key={index} className='match-box'>
       {item.proposingName} is offering you:
           <div className='user-gets'>
-          <h4>{item.offeringGame.name}</h4>
-          <img src={item.offeringGame.image.thumb_url} />
+          <h4>{item.inExchangeFor.name}</h4>
+          <img src={item.inExchangeFor.image.thumb_url} />
           </div>
 In exchange for
           <div className='user-gives'>
-          <h4>{item.inExchangeFor.name}</h4>
-          <img src={item.inExchangeFor.image.thumb_url} />
+          <h4>{item.offeringGame.name}</h4>
+          <img src={item.offeringGame.image.thumb_url} />
           </div>
           <div className='have-want-btns'>
           <Button className='accept-btn' onClick={() => { this.toggleNested(item) }} color="success"><h5>Accept</h5><h5>Trade</h5></Button>
