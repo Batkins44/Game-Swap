@@ -22,6 +22,7 @@ class Matches extends React.Component {
 
   proposeTrade = (trade) => {
     let component = this;
+    this.toggle();
     return rebase.initializedApp.database().ref().child(`proposals/${trade.otherUser}`)
     .push({
 

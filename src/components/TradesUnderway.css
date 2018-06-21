@@ -1,10 +1,36 @@
 .message-box{
+    display:flex;
     text-align:center;
     border-bottom:2px solid #207a9b;
-    padding-bottom:50px;
+    padding-bottom:30px;
+    padding-top:30px;
+
+
 }
 
 .send-address{
-    display:block;
+    display:inline;
     text-align:center;
+}
+
+
+
+.stage-2-box{
+    border-bottom:2px solid #207a9b;
+    display:flex;
+    justify-content: space-between;
+    padding-bottom:30px;
+    padding-top:30px;
+
+}
+
+.words-box{
+    display:inline-block;
+
+}
+
+.address-box{
+    border:2px solid black;
+    display:inline-block;
+    padding:10px;
 }

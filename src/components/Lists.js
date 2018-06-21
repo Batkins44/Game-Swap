@@ -11,7 +11,10 @@ export default class Lists extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      listsLoaded:false
+      listsLoaded:false,
+      wants:null,
+      haves:null,
+      rerender:null
     };
 
     this.toggle = this.toggle.bind(this);
@@ -51,6 +54,38 @@ export default class Lists extends React.Component {
       window.alert("Please Login");
   }}
 
+  toggleDelete() {
+    let component = this
+    let havesArray = [];
+    let wantsArray = [];
+    if(component.props.userObj.name){
+    rebase.fetch(`haves/${component.props.userObj.uid}`, {
+        context: this,
+        asArray: true,
+        then(data){
+          component.setState({
+            haves:data
+            
+          });
+        }
+      }).then(
+        rebase.fetch(`wants/${component.props.userObj.uid}`, {
+            context: this,
+            asArray: true,
+            then(data){
+              component.setState({
+                wants:data,
+                listsLoaded:true
+
+                
+              });
+            }
+          })
+      )
+  }else{
+      window.alert("Please Login");
+  }}
+
   toggle() {
     this.setState({
       modal: !this.state.modal
@@ -59,10 +94,12 @@ export default class Lists extends React.Component {
 
   deleteWant(game){
     rebase.remove(`wants/${this.props.userObj.uid}/${game.name}`);
+    this.toggleDelete();
   }
 
   deleteHave(game){
    rebase.remove(`haves/${this.props.userObj.uid}/${game.name}`);
+   this.toggleDelete();
   }
 
   render() {
