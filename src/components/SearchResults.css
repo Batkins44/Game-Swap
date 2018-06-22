@@ -5,6 +5,8 @@ flex-wrap:wrap;
 justify-content:center;
 padding-bottom:150px;
 margin-top:-75px;
+margin-left:250px;
+margin-right:250px;
 
 
 
@@ -79,4 +81,8 @@ grid-column:1
     color:black;
     align-self:center;
 
+}
+
+#instruct{
+    margin-bottom:50px;
 }
