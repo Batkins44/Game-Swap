@@ -4,6 +4,8 @@ import { rebase } from './Base.js'
 
 import './TradesUnderway.css'
 
+let itemObj={};
+
 class OngoingTrades extends React.Component {
   constructor(props) {
     super(props);
@@ -32,11 +34,12 @@ class OngoingTrades extends React.Component {
     });
   }
 
-  toggleNested(item) {
+  toggleNested(item,userIndex) {
     this.setState({
       nestedModal: !this.state.nestedModal,
       closeAll: false,
-      clickedItem: item
+      clickedItem: item,
+      userIndex:userIndex
     });
   }
 
@@ -47,31 +50,39 @@ class OngoingTrades extends React.Component {
     });
   }
 
-  sendAddress(name,address,city,state,zip){
-    console.log(name,address,city,state,zip)
+  sendAddress(name,address,city,state,zip,itemObj){
+    this.toggleAll()
+    console.log("====================",name,address,city,state,zip,itemObj)
+    let yourAddressInfo = {
+      line1:name,
+      line2:address,
+      line3:city + "," + state + " " + zip
+    }
+
+    itemObj.otherInfo.addressInfo = yourAddressInfo
   this.setState({
     acceptedTrades:
     
     
                                                           {
 
-            [this.state.clickedItem[5]]:
+            [itemObj.key]:
 
                                                       {
                                                         
                                                         stage:2,
-                                                        [this.state.clickedItem[2]]: {
-                                                          message:`Please send ${this.state.clickedItem[0].trading.name} to ${this.state.clickedItem[1].name} as soon as possible, then mark it as sent with the button`,
-
-                                                                                              },
-                                                              [this.state.clickedItem[3]]: {
-                                                          sentAddress:true,
-                                                          message:`Please send ${this.state.clickedItem[1].trading.name} to ${this.state.clickedItem[0].name} as soon as possible, then mark it as sent with the button`,
+                                                        [itemObj.otherUid]: {
+                                                          message:`Please send ${itemObj.yourInfo.trading.name} to ${itemObj.otherInfo.name} as soon as possible, then mark it as sent with the button`,
                                                           addressInfo:{
                                                             line1:name,
                                                             line2:address,
                                                             line3:city + "," + state + " " + zip
                                                                       }
+                                                                                              },
+                                                              [itemObj.yourUid]: {
+                                                          sentAddress:true,
+                                                          message:`Please send ${itemObj.otherInfo.trading.name} to ${itemObj.yourInfo.name} as soon as possible, then mark it as sent with the button`,
+
                                                                                                       }
                                                     }
                                                           }
@@ -81,12 +92,17 @@ class OngoingTrades extends React.Component {
   
 
   checkOngoingTrades(){
-      console.log("yep",this.state)
+      console.log("yep",this.state.acceptedTrades)
       let relevantTrades = [];
       rebase.fetch(`acceptedTrades/`, {
         context: this,
         asArray:true,
         then(data){
+          
+          
+          
+
+          
           for(let i=0;i<data.length;i++){
             let tradeValues = Object.values(data[i]);
             for(let z=0;z<tradeValues.length;z++){
@@ -96,12 +112,15 @@ class OngoingTrades extends React.Component {
                 relevantTrades.push(tradeValues);
               }
             }
+
           }
+
           console.log(relevantTrades,"relevantTrADES");
           this.setState({
             relevantTrades:relevantTrades
           })
-        }})
+        }}
+      )
       this.setState({
         modal: !this.state.modal
       });
@@ -109,25 +128,26 @@ class OngoingTrades extends React.Component {
 
   markSent(item){
     console.log(item,"item")
-    if(item[0].sentGame == true){
+    this.toggle();
+    if(itemObj.otherInfo.sentGame == true || itemObj.otherInfo.sentGame == true){
       this.setState({
         acceptedTrades:
         
         
                                                               {
     
-                [item[5]]:
+                [itemObj.key]:
                                                             
                                                           {
                                                             stage:3,
-                                              [item[3]]: {
-                                                              
-                                                              message:`Thanks For sending the game. Please click the last button to mark the game as received, when it arrives`,
-                                                              sentGame:true
+                                              [itemObj.yourUid]: {
+                                                sentGame:true,
+                                                message:`Thanks For sending the game. Please click the button to mark the game as received, when it arrives`,
                                                                                                           },
-                                              [item[2]]:{
-                                                message:`Thanks For sending the game. Please click the last button to mark the game as received, when it arrives`,
-                                                
+                                              [itemObj.otherUid]:{
+                                                message:`Thanks For sending the game. Please click the button to mark the game as received, when it arrives`,
+                                                sentGame:true
+
                                               }
                                                         }
                                                               }
@@ -141,12 +161,12 @@ class OngoingTrades extends React.Component {
       
                                                             {
   
-              [item[5]]:
+              [itemObj.key]:
   
                                                         {
-                                            [item[3]]: {
+                                            [this.props.userObj.uid]: {
                                                             sentGame:true,
-                                                            message:`Thanks For sending the game. Waiting on item ${item[0].name} to send ${item[0].trading.name}`,
+                                                            message:`Thanks For sending the game. Waiting on ${itemObj.otherInfo.name} to send ${itemObj.otherInfo.receiving.name}`,
 
                                                                                                         }
                                                       }
@@ -157,45 +177,49 @@ class OngoingTrades extends React.Component {
   }
 
   markSent2(item){
-    console.log(item,"item")
-    if(item[1].sentGame == true){
+    this.toggle()
+    console.log(item,"item");
+
+    if(itemObj.otherInfo.sentGame == true || itemObj.otherInfo.sentGame == true){
       this.setState({
         acceptedTrades:
         
         
                                                               {
     
-                [item[5]]:
+                [itemObj.key]:
                                                             
                                                           {
                                                             stage:3,
-                                              [item[3]]: {  
-                                                              sentGame:true,
-                                                              message:`Thanks For sending the game. Please click the last button to mark the game as received, when it arrives`,
-  
+                                              [itemObj.otherUid]: {
+                                                            sentGame:true,
+                                                              message:`Thanks For sending the game. Please click the button to mark the game as received, when it arrives`,
                                                                                                           },
-                                              [item[2]]:{
-                                                message:`Thanks For sending the game. Please click the last button to mark the game as received, when it arrives`,
+                                              [itemObj.yourUid]:{
+                                                message:`Thanks For sending the game. Please click the button to mark the game as received, when it arrives`,
+                                                sentGame:true
 
+                                                
                                               }
                                                         }
                                                               }
     
     
        })
-    }else{
+    }else
+    {
     this.setState({
       acceptedTrades:
       
       
                                                             {
   
-              [item[5]]:
+              [itemObj.key]:
   
                                                         {
-                                            [item[2]]: {
+                                            [this.props.userObj.uid]: {
                                                             sentGame:true,
-                                                            message:`Thanks For sending the game. Waiting on item ${item[1].name} to send ${item[1].trading.name}`,
+                                                            message:`Thanks For sending the game. Waiting on ${itemObj.otherInfo.name} to send ${itemObj.otherInfo.trading.name}`,
 
                                                                                                         }
                                                       }
@@ -206,25 +230,26 @@ class OngoingTrades extends React.Component {
   }
 
   markReceived(item){
+    this.toggle();
     console.log(item,"item")
-    if(item[0].receivedGame == true){
+    if(itemObj.otherInfo.receivedGame == true || itemObj.yourInfo.receivedGame == true){
       this.setState({
         acceptedTrades:
         
         
                                                               {
     
-                [item[5]]:
+                [itemObj.key]:
                                                             
                                                           {
                                                             stage:4,
-                                              [item[3]]: {
+                                              [itemObj.yourUid]: {
                                                               receivedGame:true,
                                                               message:`Trade Completed!`,
   
                                                                                                           },
-                                              [item[2]]:{
-
+                                              [itemObj.otherUid]:{
+                                                receivedGame:true,
                                                 message:`Trade Completed`,
 
                                               }
@@ -240,10 +265,10 @@ class OngoingTrades extends React.Component {
       
                                                             {
   
-              [item[5]]:
+              [itemObj.key]:
   
                                                         {
-                                            [item[3]]: {
+                                            [this.props.userObj.uid]: {
                                                             receivedGame:true,
                                                             message:`Thanks! Hope you enjoy your new Game`,
 
@@ -256,26 +281,27 @@ class OngoingTrades extends React.Component {
   }
 
   markReceived2(item){
+    this.toggle();
     console.log(item,"item")
-    if(item[1].receivedGame == true){
+    if(itemObj.otherInfo.receivedGame == true || itemObj.yourInfo.receivedGame == true){
       this.setState({
         acceptedTrades:
         
         
                                                               {
     
-                [item[5]]:
+                [itemObj.key]:
                                                             
                                                           {
                                                             stage:4,
-                                              [item[3]]: {
-
-                                                              message:`Trade Completed!`,
+                                              [itemObj.yourUid]: {
+                                                receivedGame:true,
+                                                message:`Trade Completed!`,
   
                                                                                                           },
-                                              [item[2]]:{
+                                              [itemObj.otherUid]:{
                                                 receivedGame:true,
-                                                message:`Trade Completed`
+                                                message:`Trade Completed`,
 
                                               }
                                                         }
@@ -290,12 +316,12 @@ class OngoingTrades extends React.Component {
       
                                                             {
   
-              [item[5]]:
+              [itemObj.key]:
   
                                                         {
-                                            [item[2]]: {
+                                            [itemObj.yourUid]: {
                                                             receivedGame:true,
-                                                            message:`Thanks! Hope you enjoy your new Game`
+                                                            message:`Thanks! Hope you enjoy your new Game`,
 
                                                                                                         }
                                                       }
@@ -306,130 +332,189 @@ class OngoingTrades extends React.Component {
   }
 
   render() {
+    console.log("MISSS STATE",this.state,"itemObj",itemObj);
     let messages;
-    if(this.state.relevantTrades){
+    let userType;
+    let userIndex;
+    if(this.state.relevantTrades && this.props.userObj.uid){
     messages = this.state.relevantTrades.map((item,index) => {
       console.log("HIGGHTEM",item)
-      if(this.props.userObj.uid == item[3]){
-      if(item[4] == 1 && item[1].sentAddress == true){
+      for(let i=0;i<item.length;i++){
+       let current = item[i];
+       if(current.uid){
+        if(current.uid == this.props.userObj.uid){
+          userIndex=i;
+        }
+       }
+      }
+      console.log("THISTHEITEMNOOOW",userIndex,item[userIndex])
+
+      if(userIndex == 0){
+      itemObj.yourInfo = item[0];
+      itemObj.otherInfo = item[1];
+      itemObj.yourUid = item[2];
+      itemObj.otherUid=item[3];
+      itemObj.stage=item[4];
+      itemObj.key=item[5];
+      itemObj.userIndex=0;
+      itemObj.otherIndex=1;
+      }else if(userIndex == 1){
+        itemObj.yourInfo = item[1];
+        itemObj.otherInfo = item[0];
+        itemObj.yourUid = item[2];
+        itemObj.otherUid=item[3];
+        itemObj.stage=item[4];
+        itemObj.key=item[5];
+        itemObj.userIndex=0;
+        itemObj.otherIndex=1;
+      }
+      console.log(itemObj,"itemObj")
+
+      if(item[userIndex]){
+      if(item[userIndex].proposed == false){
+      if(item[4] == 1 && item[userIndex].sentAddress == true){
       return(
       <div className='message-box' key={index}>
-      <h5>{item[1].message}</h5>
+      <h5>{item[userIndex].message}</h5>
       </div>
       )
     }
     else if(item[4] == 1){
       return(
         <div className='message-box' key={index}>
-        <h5>{item[1].message}</h5>
-        <Button className="send-address" color="success" onClick={() => { this.toggleNested(item) }}>Send Address</Button>
+        <h5>{item[userIndex].message}</h5>
+        <Button className="send-address" color="success" onClick={() => { this.toggleNested(item,userIndex) }}>Send Address</Button>
         </div>
         )
-      }else if(item[4] == 2 && item[1].sentGame == true){
+      }else if(item[4] == 2 && item[userIndex].sentGame == true){
         return(
         <div key={index} className='stage-2-box'>
         <div className='words-box' key={index}>
-        <h5>{item[1].message}</h5>
+        <h5>{item[userIndex].message}</h5>
         </div>
         </div>
         )
-      }else if(item[4] == 2){
+      }else if(item[4] == 2 && itemObj.otherInfo.addressInfo){
         return(
         <div key={index} className='stage-2-box'>
         <div className='words-box' key={index}>
-        <h5>{item[1].message}</h5>
+        <h5>{item[userIndex].message}</h5>
         </div>
         <div className='address-box'>
-          {item[0].addressInfo.line1}<br />
-          {item[0].addressInfo.line2}<br />
-          {item[0].addressInfo.line3}
+          {itemObj.otherInfo.addressInfo.line1}<br />
+          {itemObj.otherInfo.addressInfo.line2}<br />
+          {itemObj.otherInfo.addressInfo.line3}
         </div>
         <Button className="sent-game" color="success" onClick={() => { this.markSent(item) }}>Sent</Button>
 
         </div>
         )
-      }else if(item[4] == 3 && item[1].receivedGame == true){
+      }else if(item[4] == 2){
+        return(
+          <div key={index} className='stage-2-box'>
+          <div className='words-box' key={index}>
+          <h5>{item[userIndex].message}</h5>
+          </div>
+          <div className='address-box'>
+Loading
+          </div>  
+          </div>
+          )
+      }else if(item[4] == 3 && item[userIndex].receivedGame == true){
         return(
         <div className='message-box' key={index}>
-        <h5>{item[1].message}</h5>
+        <h5>{item[userIndex].message}</h5>
         </div>
         )
       }
       else if(item[4] == 3){
         return(
           <div className='message-box' key={index}>
-          <h5>{item[1].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           <Button className="send-address" color="success" onClick={() => { this.markReceived(item) }}>Received</Button>
           </div>
           )
         }else{ return(
           <div className='message-box' key={index}>
-          <h5>{item[0].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           </div>
           )}
-    }else if(this.props.userObj.uid == item[2]){
+    }else if(item[userIndex].proposed == true){
       console.log("address sent")
-      if(item[4] == 1 && item[0].sentAddress == true){
+      if(item[4] == 1 && item[userIndex].sentAddress == true){
         return(
         <div className='message-box' key={index}>
-        <h5>{item[0].message}</h5>
+        <h5>{item[userIndex].message}</h5>
         </div>
         )
       }
       else if(item[4] == 1){
         return(
           <div className='message-box' key={index}>
-          <h5>{item[0].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           <Button className="send-address" color="success" onClick={() => { this.toggleNested(item) }}>Send Address</Button>
           </div>
           )
-        }else if(item[4] == 2 && item[0].sentGame == true){
+        }else if(item[4] == 2 && item[userIndex].sentGame == true){
           return(
           <div key={index} className='stage-2-box'>
           <div className='words-box' key={index}>
-          <h5>{item[0].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           </div>
+          </div>
+          )
+        }else if(item[4] == 2 && itemObj.yourInfo.addressInfo){
+          return(
+          <div key={index} className='stage-2-box'>
+          <div className='words-box' key={index}>
+          <h5>{item[userIndex].message}</h5>
+          </div>
+          <div className='address-box'>
+          {itemObj.otherInfo.addressInfo.line1}<br />
+          {itemObj.otherInfo.addressInfo.line2}<br />
+          {itemObj.otherInfo.addressInfo.line3}
+          </div>
+          <Button className="sent-game" color="success" onClick={() => { this.markSent2(item) }}>Sent</Button>
+  
           </div>
           )
         }else if(item[4] == 2){
           return(
           <div key={index} className='stage-2-box'>
           <div className='words-box' key={index}>
-          <h5>{item[0].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           </div>
           <div className='address-box'>
-            {item[1].addressInfo.line1}<br />
-            {item[1].addressInfo.line2}<br />
-            {item[1].addressInfo.line3}
+            Loading
           </div>
-          <Button className="sent-game" color="success" onClick={() => { this.markSent2(item) }}>Sent</Button>
   
           </div>
           )
-        }else if(item[4] == 3 && item[0].receivedGame == true){
+        }
+        else if(item[4] == 3 && item[userIndex].receivedGame == true){
           return(
           <div className='message-box' key={index}>
-          <h5>{item[0].message}</h5>
+          <h5>{item[userIndex].message}</h5>
           </div>
           )
         }
         else if(item[4] == 3){
           return(
             <div className='message-box' key={index}>
-            <h5>{item[0].message}</h5>
+            <h5>{item[userIndex].message}</h5>
             <Button className="send-address" color="success" onClick={() => { this.markReceived2(item) }}>Received</Button>
             </div>
             )
           }else{
             return(
               <div className='message-box' key={index}>
-              <h5>{item[0].message}</h5>
+              <h5>{item[userIndex].message}</h5>
               </div>
               )
           }
 
 
-    }})
+    }}})
     console.log("statemessage",this.state.relevantTrades);
     console.log("messages",messages);
   }else{
@@ -481,7 +566,7 @@ class OngoingTrades extends React.Component {
               <FormGroup check row>
                 <Col sm={{ size: 10, offset: 2 }}>
               
-                  <Button onClick={() => { this.sendAddress(document.getElementById('addressName').value,document.getElementById('street-address').value,document.getElementById('city-address').value,document.getElementById('state-address').value,document.getElementById('zip-address').value) }} color='success'>Accept</Button>
+                  <Button onClick={() => { this.sendAddress(document.getElementById('addressName').value,document.getElementById('street-address').value,document.getElementById('city-address').value,document.getElementById('state-address').value,document.getElementById('zip-address').value,itemObj) }} color='success'>Accept</Button>
                 </Col>
               </FormGroup>
               </Form>

@@ -20,9 +20,19 @@ class Matches extends React.Component {
     this.proposeTrade = this.proposeTrade.bind(this);
   }
 
+  // removeProposal(trade){
+  //   let copyFullMatches = this.state.fullMatches;
+  //   let index = this.state.fullMatches.indexOf(trade);
+  //   copyFullMatches.splice(index,1);
+  //   this.setState({
+  //     fullMatches:copyFullMatches
+  //   })
+  // }
+
   proposeTrade = (trade) => {
     let component = this;
-    this.toggle();
+
+    window.alert("Proposal Sent")
     return rebase.initializedApp.database().ref().child(`proposals/${trade.otherUser}`)
     .push({
 
@@ -112,25 +122,19 @@ class Matches extends React.Component {
 
                 for (let i=0;i<userWantsArray.length;i++){
                   let currentUserWant = userWantsArray[i];
-                  console.log("currentUserWant",currentUserWant);
-                  // console.log(currentUserHave);
                   for(let z=0;z<allHaves.length;z++){
                     let currentOtherUserHas = Object.keys(allHaves[z]);
-                    // console.log("otheruserhas",currentOtherUserHas);
                     for(let x=0;x<currentOtherUserHas.length;x++){
                       let otherUserHasGame = currentOtherUserHas[x];
-                      // console.log("user Has:",currentUserHave,"||||||", 'someone WantsGame:',otherUserWantsGame);
                       if(currentUserWant == otherUserHasGame){
-                        console.log("ITS A MATCHHHHH",currentUserWant,otherUserHasGame);
                         match2.push([allHaves[z].key, allHaves[z][`${currentUserWant}`]])
                         for(let q=0;q<match1.length;q++){
                           if(match1[q][0] == allHaves[z].key){
                             match3.push({ 
-                              userGets:match1[q][1],
-                              userGives:allHaves[z][`${currentUserWant}`],
+                              userGives:match1[q][1],
+                              userGets:allHaves[z][`${currentUserWant}`],
                               otherUser:allHaves[z].key}
                               );
-                            // match3.userGets = allHaves[z][`${currentUserWant}`]
                           }
                         }
 
