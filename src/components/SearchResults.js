@@ -105,7 +105,7 @@ return (
 
     }else{
 return(
-<div>
+<div id='instruct'>
 <p>To start, click the appropriate button to add games to your "Want" and "Have" List.</p>
 
 </div>

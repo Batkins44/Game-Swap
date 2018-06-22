@@ -286,7 +286,7 @@ In exchange for
 )})
     return(
         <div id='top-nav'>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav color='#da291c' className="navbar navbar-expand-lg navbar-dark bg-primary">
 
         <div>
           <ul className="navbar-nav">
